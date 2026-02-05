@@ -32,3 +32,15 @@ export const getItem = (req: Request, res: Response): void => {
     const item: string[] = itemService.getItem(id);
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
+
+export const updateItem = (req: Request, res: Response): void => {
+    const id = Number(req.params.id);
+    const item: string[] = itemService.getItem(id);
+    res.status(200).json({ message: "Tickets urgency calculated", data: item });
+}
+
+export const deleteItem = (req: Request, res: Response): void => {
+    const id = Number(req.params.id);
+    const item: string[] = itemService.getItem(id);
+    res.status(200).json({ message: "Tickets urgency calculated", data: item });
+}
