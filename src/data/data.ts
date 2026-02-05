@@ -1,6 +1,6 @@
-import { Ticket } from "src/interface_properties";
+import { TicketPick } from "src/interface_properties";
 
-export const tickets : Ticket[] = [
+export const tickets : TicketPick[] = [
   {
       id: 1,
       title: "Update footer copyright year",

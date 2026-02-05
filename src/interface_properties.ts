@@ -31,3 +31,5 @@ export interface Ticket {
     urgencyScore: number;
     urgencyLevel : string;
 }
+
+export type TicketPick = Pick<Ticket, "id" | "title" | "description" | "priority" | "status" | "createdAt">;
