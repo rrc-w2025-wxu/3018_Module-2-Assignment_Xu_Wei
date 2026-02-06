@@ -8,11 +8,37 @@ export const getAllItems = ():TicketPick[] => {
 }
 
 export const getItem = (id : number):Ticket | undefined=> {
-    for(let ticket of tickets){
+    const ticketsData = tickets;
+    for(let ticket of ticketsData){
         if(ticket.id === id){ 
+            const timeInterval = ticket.currentTime.getTime() - ticket.createdAt.getTime();
+            ticket.ticketAge = Math.floor(timeInterval / (1000 * 60 * 60 * 24));
+
+            if(ticket.status === "open"){
+                if(ticket.priority === "critical"){
+                    ticket.urgencyScore = ticket.ticketAge * 5 + 50;
+                    ticket.urgencyLevel = "Critical. Immediate attention required.";
+                }
+                else if(ticket.priority === "high"){
+                    ticket.urgencyScore = ticket.ticketAge * 5 +30;
+                    ticket.urgencyLevel = "High urgency. Prioritize resolution.";
+                }
+                else if(ticket.priority === "medium"){
+                    ticket.urgencyScore = ticket.ticketAge * 5 + 20;
+                    ticket.urgencyLevel = "Moderate. Schedule for attention.";
+                }
+                else{
+                    ticket.urgencyScore = ticket.ticketAge * 5 + 10;
+                    ticket.urgencyLevel = "Low urgency. Address when capacity allows.";
+                }
+            }
+            else{
+                ticket.urgencyScore = 0;
+                ticket.urgencyLevel = "Minimal. Ticket resolved.";
+            }
             return ticket;
         }
-    }
-            
+    }        
     return undefined;
 }
+

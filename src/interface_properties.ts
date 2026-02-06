@@ -27,9 +27,10 @@ export interface Ticket {
     priority : Priority;
     status : Status;
     createdAt : Date;
-    ticketAge : number;
-    urgencyScore: number;
-    urgencyLevel : string;
+    currentTime: Date;
+    ticketAge? : number;
+    urgencyScore? : number;
+    urgencyLevel? : string;
 }
 
 export type TicketPick = Pick<Ticket, "id" | "title" | "description" | "priority" | "status" | "createdAt">;
