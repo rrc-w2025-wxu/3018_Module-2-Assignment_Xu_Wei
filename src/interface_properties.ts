@@ -27,7 +27,7 @@ export interface Ticket {
     priority : Priority;
     status : Status;
     createdAt : Date;
-    currentTime? : Date;
+    currentTime : Date;
     ticketAge? : number;
     urgencyScore? : number;
     urgencyLevel? : string;

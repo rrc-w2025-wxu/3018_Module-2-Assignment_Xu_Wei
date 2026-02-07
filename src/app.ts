@@ -7,8 +7,8 @@ export const app: Express = express();
 // Use Morgan for HTTP request logging
 app.use(morgan("combined"));
 
-app.use(express.json);
+app.use(express.json());
 
-app.use("src/api/v1/", router)
+app.use("/api/v1/", router)
 
 export default app;

@@ -1,8 +1,8 @@
 
-import { HealthCheckResponse } from "src/interface_properties";
+import { HealthCheckResponse } from "../../interface_properties";
 import { Request, Response } from "express";
-import { PriorityEnum } from "src/interface_properties";
-import * as itemService from "./service/itemService";
+import { PriorityEnum } from "../../interface_properties";
+import * as itemService from "./services";
 
 /**
  * Portfolio performance API handler.
@@ -19,18 +19,18 @@ export const itemsHealthCheck = (req: Request, res: Response): void => {
         timestamp: new Date().toISOString(),
         version: "1.0.0",
     };
-    res.send(healthCheck);
+    res.json(healthCheck);
 }
 
 export const getAllItems = (req: Request, res: Response): void => {
-    const items: string[] = itemService.getAllItems();
+    const items = itemService.getAllItems();
     const count: number = items.length;
     res.status(200).json({ message: "Tickets retrieved", count, data: items });
 }
 
 export const getItem = (req: Request, res: Response): void => {
     const id = Number(req.params.id);
-    const item: string[] = itemService.getItem(id);
+    const item = itemService.getItem(id);
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
 
@@ -52,7 +52,7 @@ export const createItem = (req: Request, res: Response) => {
             message: "Invalid priority. Must be one of: critical, high, medium, low"
         });
     }
-        const item: string[] = itemService.createItem(title, description, priority);
+        const item = itemService.createItem(title, description, priority);
         res.status(200).json({ message: "Tickets urgency calculated", data: item });
     }
 
@@ -72,12 +72,12 @@ export const updateItem = (req: Request, res: Response) => {
             message: "Invalid status. Must be one of: open, in-progress, resolved"
         });
     }
-    const item: string[] = itemService.getItem(id);
-    res.status(200).json({ message: "Tickets urgency calculated", data: item });
+    itemService.getItem(id);
+    res.status(200).json({ message: "Item updated" });
 }
 
 export const deleteItem = (req: Request, res: Response): void => {
     const id = Number(req.params.id);
-    const item: string[] = itemService.deleteItem(id);
-    res.status(200).json({ message: "Tickets urgency calculated", data: item });
+    itemService.deleteItem(id);
+    res.status(200).json({ message: "Item deleted" });
 }

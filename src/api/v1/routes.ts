@@ -8,6 +8,6 @@ router.get("/items", getAllItems);
 router.get("/items/:id", getItem);
 router.post("/tickets", createItem);
 router.put("/tickets/:id", updateItem);
-router.get("/items/:id", deleteItem);
+router.delete("/items/:id", deleteItem);
 
 export default router;
