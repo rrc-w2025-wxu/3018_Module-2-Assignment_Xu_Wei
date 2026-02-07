@@ -13,7 +13,7 @@ export const getItem = (id : number):Ticket | undefined=> {
     const ticketsData = tickets;
     for(let ticket of ticketsData){
         if(ticket.id === id){ 
-            const timeInterval = ticket.currentTime.getTime() - ticket.createdAt.getTime();
+            const timeInterval = new Date().getTime() - ticket.createdAt.getTime();
             ticket.ticketAge = Math.floor(timeInterval / (1000 * 60 * 60 * 24));
 
             if(ticket.status === "open"){

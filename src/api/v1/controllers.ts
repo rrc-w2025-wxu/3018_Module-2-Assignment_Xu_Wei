@@ -1,6 +1,7 @@
 
 import { HealthCheckResponse } from "src/interface_properties";
 import { Request, Response } from "express";
+import { PriorityEnum } from "src/interface_properties";
 import * as itemService from "./service/itemService";
 
 /**
@@ -33,7 +34,7 @@ export const getItem = (req: Request, res: Response): void => {
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
 
-export const createItem = (req: Request, res: Response): void => {
+export const createItem = (req: Request, res: Response) => {
     const title = req.body.title;
     const description = req.body.description;
     const priority = req.body.priority;
@@ -46,17 +47,14 @@ export const createItem = (req: Request, res: Response): void => {
         return res.status(400).json({ message: "Missing required field: description" });
     }
 
-    if (!Object.values(PriorityEnum)
-      .filter(v => typeof v === "number")
-      .includes(priority)) {
-
+    if (!Object.keys(PriorityEnum).includes(priority)) {
         return res.status(400).json({
-            message: "Invalid priority"
+            message: "Invalid priority. Must be one of: critical, high, medium, low"
         });
     }
-    const item: string[] = itemService.createItem(title, description, priority);
-    res.status(200).json({ message: "Tickets urgency calculated", data: item });
-}
+        const item: string[] = itemService.createItem(title, description, priority);
+        res.status(200).json({ message: "Tickets urgency calculated", data: item });
+    }
 
 export const updateItem = (req: Request, res: Response): void => {
     const id = Number(req.params.id);
