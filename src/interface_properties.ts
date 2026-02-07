@@ -18,7 +18,7 @@ export enum PriorityEnum {
     critical = 50
 }
 
-export type Status = "open" | "resolved";
+export type Status = "open" | "in-progress" | "resolved";
 
 export interface Ticket {
     id : number;

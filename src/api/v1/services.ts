@@ -1,4 +1,4 @@
-import { Ticket } from "src/interface_properties";
+import { Status, Ticket } from "src/interface_properties";
 import { TicketPick } from "src/interface_properties";
 import { tickets } from "../../data/data"
 import { Priority } from "src/interface_properties";
@@ -62,4 +62,23 @@ export const createItem = (title:string, description:string, priority:Priority) 
 function generateId(){
     const count = tickets.length;
     return count +1;
+}
+
+export const updateItem = (id : number, priority:Priority, status:Status):Ticket | undefined => {
+    const ticketsData = tickets;
+    for (let ticket of ticketsData){
+        if (ticket.id === id){
+            ticket.priority = priority;
+            ticket.status = status;
+            return ticket;
+        }
+    }
+}
+
+export const deleteItem = (id:number) => {
+    const index = tickets.findIndex(ticket => ticket.id === id);
+
+    if (index !== -1){
+        tickets.splice(index, 1);
+    }
 }

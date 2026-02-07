@@ -56,14 +56,28 @@ export const createItem = (req: Request, res: Response) => {
         res.status(200).json({ message: "Tickets urgency calculated", data: item });
     }
 
-export const updateItem = (req: Request, res: Response): void => {
+export const updateItem = (req: Request, res: Response) => {
     const id = Number(req.params.id);
+    const priority = req.body.priority;
+    const status = req.body.status;
+
+    if (!Object.keys(PriorityEnum).includes(priority)) {
+        return res.status(400).json({
+            message: "Invalid priority. Must be one of: critical, high, medium, low"
+        });
+    }
+
+    if (!status){
+        return res.status(400).json({
+            message: "Invalid status. Must be one of: open, in-progress, resolved"
+        });
+    }
     const item: string[] = itemService.getItem(id);
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
 
 export const deleteItem = (req: Request, res: Response): void => {
     const id = Number(req.params.id);
-    const item: string[] = itemService.getItem(id);
+    const item: string[] = itemService.deleteItem(id);
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
