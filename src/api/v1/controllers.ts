@@ -33,10 +33,28 @@ export const getItem = (req: Request, res: Response): void => {
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
 
-
 export const createItem = (req: Request, res: Response): void => {
-    const id = Number(req.params.id);
-    const item: string[] = itemService.getItem(id);
+    const title = req.body.title;
+    const description = req.body.description;
+    const priority = req.body.priority;
+
+    if (!title){
+        return res.status(400).json({ message: "Missing required field: title" });
+    }
+
+    if  (!description){
+        return res.status(400).json({ message: "Missing required field: description" });
+    }
+
+    if (!Object.values(PriorityEnum)
+      .filter(v => typeof v === "number")
+      .includes(priority)) {
+
+        return res.status(400).json({
+            message: "Invalid priority"
+        });
+    }
+    const item: string[] = itemService.createItem(title, description, priority);
     res.status(200).json({ message: "Tickets urgency calculated", data: item });
 }
 

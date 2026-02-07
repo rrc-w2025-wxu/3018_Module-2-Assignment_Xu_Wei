@@ -1,6 +1,8 @@
 import { Ticket } from "src/interface_properties";
 import { TicketPick } from "src/interface_properties";
 import { tickets } from "../../data/data"
+import { Priority } from "src/interface_properties";
+import { generateKey } from "node:crypto";
 
 export const getAllItems = ():TicketPick[] => {
     const items = tickets;
@@ -42,3 +44,22 @@ export const getItem = (id : number):Ticket | undefined=> {
     return undefined;
 }
 
+export const createItem = (title:string, description:string, priority:Priority) => {
+    
+    const newTicket:Ticket = {
+        id : generateId(),
+        title,
+        description,
+        priority,
+        status : "open",
+        createdAt : new Date(),
+        currentTime: new Date()
+    };
+    tickets.push(newTicket);
+    return newTicket;
+}
+
+function generateId(){
+    const count = tickets.length;
+    return count +1;
+}
