@@ -96,7 +96,6 @@ export const createItem = (req: Request, res: Response) => {
             message: "Failed to create item",
         });
     }
-    
 }
 
 /**
@@ -108,27 +107,34 @@ export const createItem = (req: Request, res: Response) => {
  * @param res - Express Response
  */
 export const updateItem = (req: Request, res: Response) => {
-    const id = Number(req.params.id);
-    const priority = req.body.priority;
-    const status = req.body.status;
+    try{
+        const id = Number(req.params.id);
+        const priority = req.body.priority;
+        const status = req.body.status;
 
-    // Validate priority if provided
-    if (!["critical", "high", "medium", "low"].includes(priority)) {
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            message: "Invalid priority. Must be one of: critical, high, medium, low"
+        // Validate priority if provided
+        if (!["critical", "high", "medium", "low"].includes(priority)) {
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Invalid priority. Must be one of: critical, high, medium, low"
+            });
+        }
+
+        // Validate status if provided
+        if (!status){
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Invalid status. Must be one of: open, in-progress, resolved"
+            });
+        }
+
+        // Update ticket via service
+        const result = itemService.updateItem(id,priority,status);
+        res.status(HTTP_STATUS.OK).json({ message: "Item updated", data:result });
+    }catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to update item",
         });
     }
-
-    // Validate status if provided
-    if (!status){
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            message: "Invalid status. Must be one of: open, in-progress, resolved"
-        });
-    }
-
-    // Update ticket via service
-    const result = itemService.updateItem(id,priority,status);
-    res.status(HTTP_STATUS.OK).json({ message: "Item updated", data:result });
+    
 }
 
 /**
