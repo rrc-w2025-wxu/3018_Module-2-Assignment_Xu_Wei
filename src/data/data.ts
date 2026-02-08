@@ -1,6 +1,20 @@
 import { Tickets } from "src/interface_properties";
 
-// 假设 ticketAge 是整数天
+/**
+ * Sample ticket data used for testing or development.
+ *
+ * Each ticket contains:
+ * - id: Unique identifier for the ticket
+ * - title: Short summary of the issue
+ * - description: Detailed description of the issue
+ * - priority: Ticket priority level ("low", "medium", "high", "critical")
+ * - status: Current status of the ticket ("open", "resolved", etc.)
+ * - createdAt: Date when the ticket was created
+ * - currentTime: Reference time used to calculate ticket age
+ *
+ * Note: ticketAge can be calculated as the difference between currentTime and createdAt.
+ */
+
 export const tickets: Tickets[] = [
   {
     id: 1,

@@ -2,7 +2,9 @@ import request, { Response } from "supertest";
 import { app } from "../src/app";
 
 describe("Basic Route Tests", () => {
-
+    /**
+     * Test the health check endpoint.
+     */
     describe("GET /api/v1/health", () => {
         it("should return a valid health check response", async () => {
             // Act
@@ -19,14 +21,19 @@ describe("Basic Route Tests", () => {
         });
     });
 
+    /**
+     * Test retrieving all tickets.
+     */
     describe("GET /api/v1/tickets", () => {
         it("Get all tickets returns array with correct structure", async () => {
+            // Act
             const response: Response = await request(app).get("/api/v1/tickets");
 
+            // Assert
             expect(response.status).toBe(200);
             expect(Array.isArray(response.body.data)).toBe(true);
 
-            // Each ticket must have these fields checked.
+            // Assert
             response.body.data.forEach((ticket: any) => {
             expect(ticket).toEqual(
                 expect.objectContaining({
@@ -42,6 +49,9 @@ describe("Basic Route Tests", () => {
           });
         });
 
+    /**
+     * Test retrieving a single ticket with urgency calculation.
+     */
     describe("GET /api/v1/tickets/:id/urgency", () => {
         it("Ticket with urgency, 200 returned", async () => {
             // Act
@@ -68,6 +78,9 @@ describe("Basic Route Tests", () => {
         });
     });
 
+    /**
+     * Test creating a new ticket.
+     */
     describe("POST /api/v1/tickets", () => {
         it("Create a new ticket, 200 returned", async () => {
             // Arrange
@@ -102,6 +115,9 @@ describe("Basic Route Tests", () => {
         });
     });
 
+    /**
+     * Test updating an existing ticket.
+     */
     describe("PUT /api/v1/tickets/:id", () => {
         it("Update ticket, 200 returned", async () => {
             // Arrange
@@ -134,6 +150,9 @@ describe("Basic Route Tests", () => {
         });
     });
 
+    /**
+     * Test deleting a ticket.
+     */
     describe("DELETE /api/v1/tickets/:id", () => {
         it("Delete ticket, 200 returned", async () => {            
             // Act
