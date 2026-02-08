@@ -20,17 +20,18 @@ export enum PriorityEnum {
 
 export type Status = "open" | "in-progress" | "resolved";
 
-export interface Ticket {
+export interface Tickets {
     id : number;
     title : string;
     description : string;
     priority : Priority;
     status : Status;
     createdAt : Date;
-    currentTime : Date;
+    currentTime? : Date;
     ticketAge? : number;
     urgencyScore? : number;
     urgencyLevel? : string;
 }
 
-export type TicketPick = Pick<Ticket, "id" | "title" | "description" | "priority" | "status" | "createdAt">;
+export type TicketOmit = Omit<Tickets, "currentTime">;
+export type TicketPick = Pick<Tickets, "id" | "title" | "description" | "priority" | "status" | "createdAt">;

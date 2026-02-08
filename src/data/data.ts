@@ -1,7 +1,7 @@
-import { Ticket } from "src/interface_properties";
+import { Tickets } from "src/interface_properties";
 
 // 假设 ticketAge 是整数天
-export const tickets: Ticket[] = [
+export const tickets: Tickets[] = [
   {
     id: 1,
     title: "Update footer copyright year",

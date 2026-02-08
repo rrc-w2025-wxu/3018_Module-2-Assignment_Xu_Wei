@@ -1,21 +1,27 @@
-import { Status, Ticket } from "src/interface_properties";
-import { TicketPick } from "src/interface_properties";
+import { Status, TicketOmit, Tickets } from "src/interface_properties";
 import { tickets } from "../../data/data"
 import { Priority } from "src/interface_properties";
 
-export const getAllItems = ():TicketPick[] => {
-    const items = tickets;
-    return items;
+export const getAllItems = ():TicketOmit[] => {
+    const result = tickets.map(({ currentTime, ...rest }) => rest);
+    return result;
 }
 
-export const getItem = (id : number):Ticket | undefined=> {
+export const getItem = (id : number):TicketOmit | undefined=> {
     const ticketsData = tickets;
     for(let ticket of ticketsData){
         if(ticket.id === id){ 
-            const timeInterval = ticket.currentTime.getTime() - ticket.createdAt.getTime();
+            const created = new Date(ticket.createdAt);
+            const current = new Date(ticket.currentTime ?? new Date());
+
+            const timeInterval = current.getTime() - created.getTime();
             ticket.ticketAge = Math.floor(timeInterval / (1000 * 60 * 60 * 24));
 
-            if(ticket.status === "open"){
+            if(ticket.status === "resolved"){
+                ticket.urgencyScore = 0;
+                ticket.urgencyLevel = "Minimal. Ticket resolved.";
+            }
+            else if(ticket.status === "open"){
                 if(ticket.priority === "critical"){
                     ticket.urgencyScore = ticket.ticketAge * 5 + 50;
                     ticket.urgencyLevel = "Critical. Immediate attention required.";
@@ -33,11 +39,8 @@ export const getItem = (id : number):Ticket | undefined=> {
                     ticket.urgencyLevel = "Low urgency. Address when capacity allows.";
                 }
             }
-            else{
-                ticket.urgencyScore = 0;
-                ticket.urgencyLevel = "Minimal. Ticket resolved.";
-            }
-            return ticket;
+            const { currentTime, ...rest} = ticket;
+            return rest;
         }
     }        
     return undefined;
@@ -45,14 +48,13 @@ export const getItem = (id : number):Ticket | undefined=> {
 
 export const createItem = (title:string, description:string, priority:Priority) => {
     
-    const newTicket:Ticket = {
+    const newTicket:Tickets = {
         id : generateId(),
         title,
         description,
         priority,
         status : "open",
         createdAt : new Date(),
-        currentTime: new Date()
     };
     tickets.push(newTicket);
     return newTicket;
@@ -63,13 +65,15 @@ function generateId(){
     return count +1;
 }
 
-export const updateItem = (id : number, priority:Priority, status:Status):Ticket | undefined => {
+export const updateItem = (id : number, priority:Priority, status:Status):TicketOmit | undefined => {
     const ticketsData = tickets;
     for (let ticket of ticketsData){
         if (ticket.id === id){
             ticket.priority = priority;
             ticket.status = status;
-            return ticket;
+
+            const { currentTime, ...rest} = ticket;
+            return rest;
         }
     }
 }

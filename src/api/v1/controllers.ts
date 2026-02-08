@@ -1,8 +1,7 @@
 
 import { HealthCheckResponse } from "../../interface_properties";
 import { Request, Response } from "express";
-import { PriorityEnum } from "../../interface_properties";
-import { HTTP_STATUS } from "src/constants/httpConstants";
+import { HTTP_STATUS } from "../../constants/httpConstants";
 import * as itemService from "./services";
 
 /**
@@ -32,7 +31,13 @@ export const getAllItems = (req: Request, res: Response): void => {
 export const getItem = (req: Request, res: Response): void => {
     const id = Number(req.params.id);
     const item = itemService.getItem(id);
-    res.status(HTTP_STATUS.OK).json({ message: "Tickets urgency calculated", data: item });
+
+    if (item){
+        res.status(HTTP_STATUS.OK).json({ message: "Tickets urgency calculated", data: item });
+    }
+    else{
+        res.status(HTTP_STATUS.NOT_FOUND).json({ message: "Ticket not found" });
+    } 
 }
 
 export const createItem = (req: Request, res: Response) => {
@@ -48,13 +53,13 @@ export const createItem = (req: Request, res: Response) => {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Missing required field: description" });
     }
 
-    if (!Object.keys(PriorityEnum).includes(priority)) {
+    if (!["critical", "high", "medium", "low"].includes(priority)) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
             message: "Invalid priority. Must be one of: critical, high, medium, low"
         });
     }
         const item = itemService.createItem(title, description, priority);
-        res.status(HTTP_STATUS.CREATED).json({ message: "Tickets urgency calculated", data: item });
+        res.status(HTTP_STATUS.CREATED).json({ message: "Ticket created", data: item });
     }
 
 export const updateItem = (req: Request, res: Response) => {
@@ -62,7 +67,7 @@ export const updateItem = (req: Request, res: Response) => {
     const priority = req.body.priority;
     const status = req.body.status;
 
-    if (!Object.keys(PriorityEnum).includes(priority)) {
+    if (!["critical", "high", "medium", "low"].includes(priority)) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
             message: "Invalid priority. Must be one of: critical, high, medium, low"
         });
@@ -73,8 +78,8 @@ export const updateItem = (req: Request, res: Response) => {
             message: "Invalid status. Must be one of: open, in-progress, resolved"
         });
     }
-    itemService.getItem(id);
-    res.status(HTTP_STATUS.OK).json({ message: "Item updated" });
+    const result = itemService.updateItem(id,priority,status);
+    res.status(HTTP_STATUS.OK).json({ message: "Item updated", data:result });
 }
 
 export const deleteItem = (req: Request, res: Response): void => {
