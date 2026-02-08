@@ -30,5 +30,14 @@ describe("Urgency Function Tests", () => {
             expect(result?.urgencyScore).toBe(25);
             expect(result?.urgencyLevel).toBe("Low urgency. Address when capacity allows.");
         });
+
+        it("calculates urgency for id is 7", () => {
+            // Act
+            const result = getItem(7);
+
+            // Assert
+            expect(result?.urgencyScore).toBe(0);
+            expect(result?.urgencyLevel).toBe("Minimal. Ticket resolved.");
+        });
     });
 });
