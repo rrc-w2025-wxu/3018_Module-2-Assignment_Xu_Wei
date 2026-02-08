@@ -3,7 +3,7 @@ import { getItem } from "../src/api/v1/services";
 
 describe("Urgency Function Tests", () => {
 
-    describe("/api/v1/tickets/1/urgency", () => {
+    describe("/api/v1/tickets/:id/urgency", () => {
         it("calculates urgency for id is 5", () => {
             // Act
             const result = getItem(5);
@@ -13,22 +13,13 @@ describe("Urgency Function Tests", () => {
             expect(result?.urgencyLevel).toBe("High urgency. Prioritize resolution.");
         });
 
-        it("calculates percentageChange for < 10", () => {
+        it("calculates urgency for id is 3", () => {
             // Act
-            const result = calculatePortfolioPerformance(10000, 10800);
+            const result = getItem(3);
 
             // Assert
-            expect(result.percentageChange).toBe(8);
-            expect(result.performanceSummary).toBe("Modest gain. Your portfolio is growing slowly.");
-        });
-
-        it("calculates percentageChange for < -10", () => {
-            // Act
-            const result = calculatePortfolioPerformance(10000, 7000);
-
-            // Assert
-            expect(result.percentageChange).toBe(-30);
-            expect(result.performanceSummary).toBe("Significant loss. Review your portfolio strategy.");
+            expect(result?.urgencyScore).toBe(50);
+            expect(result?.urgencyLevel).toBe("Moderate. Schedule for attention.");
         });
     });
 });
