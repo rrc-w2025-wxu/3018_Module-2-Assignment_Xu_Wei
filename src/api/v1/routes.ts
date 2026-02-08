@@ -4,10 +4,10 @@ import { getAllItems, getItem, createItem, updateItem, deleteItem, itemsHealthCh
 const router: Router = express.Router();
 
 router.get("/health", itemsHealthCheck);
-router.get("/items", getAllItems);
-router.get("/items/:id", getItem);
+router.get("/tickets", getAllItems);
+router.get("/tickets/:id/urgency", getItem);
 router.post("/tickets", createItem);
 router.put("/tickets/:id", updateItem);
-router.delete("/items/:id", deleteItem);
+router.delete("/tickets/:id", deleteItem);
 
 export default router;
