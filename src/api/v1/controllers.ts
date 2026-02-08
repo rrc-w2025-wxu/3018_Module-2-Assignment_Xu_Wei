@@ -67,29 +67,36 @@ export const getItem = (req: Request, res: Response): void => {
  * @param res - Express Response
  */
 export const createItem = (req: Request, res: Response) => {
-    const title = req.body.title;
-    const description = req.body.description;
-    const priority = req.body.priority;
+    try{
+        const title = req.body.title;
+        const description = req.body.description;
+        const priority = req.body.priority;
 
-    // Validate required fields
-    if (!title){
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Missing required field: title" });
-    }
+        // Validate required fields
+        if (!title){
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Missing required field: title" });
+        }
 
-    if  (!description){
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Missing required field: description" });
-    }
+        if  (!description){
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({ message: "Missing required field: description" });
+        }
 
-    // Validate priority value
-    if (!["critical", "high", "medium", "low"].includes(priority)) {
-        return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            message: "Invalid priority. Must be one of: critical, high, medium, low"
+        // Validate priority value
+        if (!["critical", "high", "medium", "low"].includes(priority)) {
+            return res.status(HTTP_STATUS.BAD_REQUEST).json({
+                message: "Invalid priority. Must be one of: critical, high, medium, low"
+            });
+        }
+
+        // Create ticket via service
+        const item = itemService.createItem(title, description, priority);
+        res.status(HTTP_STATUS.CREATED).json({ message: "Ticket created", data: item });
+    }catch (error) {
+        res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+            message: "Failed to create item",
         });
     }
-
-    // Create ticket via service
-    const item = itemService.createItem(title, description, priority);
-    res.status(HTTP_STATUS.CREATED).json({ message: "Ticket created", data: item });
+    
 }
 
 /**
