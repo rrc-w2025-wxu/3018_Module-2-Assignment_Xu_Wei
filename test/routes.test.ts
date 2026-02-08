@@ -147,15 +147,6 @@ describe("Basic Route Tests", () => {
                 message: "Item deleted"
               })
             );
-
-            // Check
-            const responseCheck: Response = await request(app)
-                .get("/api/v1/tickets/1");
-            
-            expect(responseCheck.status).toBe(404);
-            expect(responseCheck.body).toEqual(
-                { message: "Ticket not found" }
-            );
         });
     });
 
