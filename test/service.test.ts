@@ -21,5 +21,14 @@ describe("Urgency Function Tests", () => {
             expect(result?.urgencyScore).toBe(50);
             expect(result?.urgencyLevel).toBe("Moderate. Schedule for attention.");
         });
+
+        it("calculates urgency for id is 1", () => {
+            // Act
+            const result = getItem(1);
+
+            // Assert
+            expect(result?.urgencyScore).toBe(25);
+            expect(result?.urgencyLevel).toBe("Low urgency. Address when capacity allows.");
+        });
     });
 });
