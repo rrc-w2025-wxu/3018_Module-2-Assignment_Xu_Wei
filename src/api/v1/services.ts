@@ -120,6 +120,44 @@ export const updateItem = (id : number, priority:Priority, status:Status):Ticket
             ticket.priority = priority;
             ticket.status = status;
 
+            // Calculate ticketAge
+            const created = new Date(ticket.createdAt);
+            const current = new Date();
+            ticket.ticketAge = Math.floor((current.getTime() - created.getTime()) / (1000 * 60 * 60 * 24));
+
+            // Calculate score and level
+            if(ticket.status === "resolved"){
+                ticket.urgencyScore = 0;
+                ticket.urgencyLevel = "Minimal. Ticket resolved.";
+            }
+            else if(ticket.status === "open"){
+                if(ticket.priority === "critical"){
+                    ticket.urgencyScore = ticket.ticketAge * 5 + 50;
+                }
+                else if(ticket.priority === "high"){
+                    ticket.urgencyScore = ticket.ticketAge * 5 +30;
+                }
+                else if(ticket.priority === "medium"){
+                    ticket.urgencyScore = ticket.ticketAge * 5 + 20;
+                }
+                else{
+                    ticket.urgencyScore = ticket.ticketAge * 5 + 10;
+                }
+
+                if(ticket.urgencyScore >= 80) {
+                    ticket.urgencyLevel = "Critical. Immediate attention required.";
+                } 
+                else if(ticket.urgencyScore >= 55) { 
+                    ticket.urgencyLevel = "High urgency. Prioritize resolution.";
+                } 
+                else if(ticket.urgencyScore >= 30) {
+                    ticket.urgencyLevel = "Moderate. Schedule for attention.";
+                } 
+                else {
+                    ticket.urgencyLevel = "Low urgency. Address when capacity allows.";
+                }       
+            }
+
             const { currentTime, ...rest} = ticket;
             return rest;
         }

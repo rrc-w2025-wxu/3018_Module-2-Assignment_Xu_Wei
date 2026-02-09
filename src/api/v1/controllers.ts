@@ -134,7 +134,6 @@ export const updateItem = (req: Request, res: Response) => {
             message: "Failed to update item",
         });
     }
-    
 }
 
 /**
