@@ -38,20 +38,29 @@ export const getItem = (id : number):TicketOmit | undefined=> {
             else if(ticket.status === "open"){
                 if(ticket.priority === "critical"){
                     ticket.urgencyScore = ticket.ticketAge * 5 + 50;
-                    ticket.urgencyLevel = "Critical. Immediate attention required.";
                 }
                 else if(ticket.priority === "high"){
                     ticket.urgencyScore = ticket.ticketAge * 5 +30;
-                    ticket.urgencyLevel = "High urgency. Prioritize resolution.";
                 }
                 else if(ticket.priority === "medium"){
                     ticket.urgencyScore = ticket.ticketAge * 5 + 20;
-                    ticket.urgencyLevel = "Moderate. Schedule for attention.";
                 }
                 else{
                     ticket.urgencyScore = ticket.ticketAge * 5 + 10;
-                    ticket.urgencyLevel = "Low urgency. Address when capacity allows.";
                 }
+
+                if(ticket.urgencyScore >= 80) {
+                    ticket.urgencyLevel = "Critical. Immediate attention required.";
+                } 
+                else if(ticket.urgencyScore >= 55) { 
+                    ticket.urgencyLevel = "High urgency. Prioritize resolution.";
+                } 
+                else if(ticket.urgencyScore >= 30) {
+                    ticket.urgencyLevel = "Moderate. Schedule for attention.";
+                } 
+                else {
+                    ticket.urgencyLevel = "Low urgency. Address when capacity allows.";
+                }       
             }
 
             // Remove currentTime before returning
