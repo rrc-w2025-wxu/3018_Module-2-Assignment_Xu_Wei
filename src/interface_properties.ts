@@ -15,17 +15,6 @@ export interface HealthCheckResponse {
 export type Priority = "low" | "medium" | "high" | "critical";
 
 /**
- * Maps priority levels to numeric values for urgency calculation.
- * Higher numbers indicate higher urgency.
- */
-export enum PriorityEnum {
-    low = 10,
-    medium = 20,
-    high = 30,
-    critical = 50
-}
-
-/**
  * Represents the allowed status values for a ticket.
  */
 export type Status = "open" | "in-progress" | "resolved";
