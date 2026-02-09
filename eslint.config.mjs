@@ -3,6 +3,8 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 
 export default [
+  js.configs.recommended,
+
   {
     ignores: [
       "**/dist/*",
@@ -12,15 +14,16 @@ export default [
       "jest.config.ts",
     ],
   },
+
   {
-    files: ["**/*.ts", "**/*.tsx"],  // ✅ 修改这里
+    files: ["**/*.ts", "**/*.tsx"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
         project: "./tsconfig.json",
-        tsconfigRootDir: import.meta.dir,
+        tsconfigRootDir: new URL(".", import.meta.url).pathname,
       },
     },
     plugins: {
